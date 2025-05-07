@@ -26,7 +26,7 @@ config :rumbl, RumblWeb.Endpoint,
       "--mode",
       "development",
       "--watch",
-      "--watch-options-stdin",
+      # "--watch-options-stdin",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]
