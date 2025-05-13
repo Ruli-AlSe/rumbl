@@ -1,7 +1,7 @@
-defmodule Rumbl.TestHolpers do
+defmodule Rumbl.TestHelpers do
   alias Rumbl.{ Accounts, Multimedia }
 
-  def user_fixtures(attrs \\ %{}) do
+  def user_fixture(attrs \\ %{}) do
     {:ok, user} =
       attrs
       |> Enum.into(%{
