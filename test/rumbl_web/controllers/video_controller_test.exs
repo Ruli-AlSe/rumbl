@@ -1,6 +1,12 @@
 defmodule RumblWeb.VideoControllerTest do
   use RumblWeb.ConnCase, async: true
 
+  @create_attrs %{
+    url: "http://example.com/video.mp4",
+    title: "some title",
+    description: "some description",
+  }
+
   test "requires user authentication on all actions", %{conn: conn} do
     Enum.each([
       get(conn, Routes.video_path(conn, :new)),
@@ -40,11 +46,6 @@ defmodule RumblWeb.VideoControllerTest do
       refute response =~ other_video.title
     end
 
-    @create_attrs %{
-      url: "http://example.com/video.mp4",
-      title: "some title",
-      description: "some description",
-    }
     @invalid_attrs %{title: "invalid"}
 
     defp video_count, do: Enum.count(Multimedia.list_videos())
@@ -70,28 +71,28 @@ defmodule RumblWeb.VideoControllerTest do
       assert html_response(conn, 200) =~"check the errors"
       assert video_count() == count_before
     end
+  end
 
-    test "authorized actions against access by other users", %{conn: conn} do
-      owner = user_fixture(username: "owner")
-      video = video_fixture(owner, @create_attrs)
-      non_owner = user_fixture(username: "sneaky")
-      conn = assign(conn, :current_user, non_owner)
+  test "authorized actions against access by other users", %{conn: conn} do
+    owner = user_fixture(username: "owner")
+    video = video_fixture(owner, @create_attrs)
+    non_owner = user_fixture(username: "sneaky")
+    conn = assign(conn, :current_user, non_owner)
 
-      assert_error_sent :not_found, fn ->
-        get(conn, Routes.video_path(conn, :show, video))
-      end
+    assert_error_sent :not_found, fn ->
+      get(conn, Routes.video_path(conn, :show, video))
+    end
 
-      assert_error_sent :not_found, fn ->
-        get(conn, Routes.video_path(conn, :edit, video))
-      end
+    assert_error_sent :not_found, fn ->
+      get(conn, Routes.video_path(conn, :edit, video))
+    end
 
-      assert_error_sent :not_found, fn ->
-        get(conn, Routes.video_path(conn, :update, video, video: @create_attrs))
-      end
+    assert_error_sent :not_found, fn ->
+      get(conn, Routes.video_path(conn, :update, video, video: @create_attrs))
+    end
 
-      assert_error_sent :not_found, fn ->
-        get(conn, Routes.video_path(conn, :delete, video))
-      end
+    assert_error_sent :not_found, fn ->
+      get(conn, Routes.video_path(conn, :delete, video))
     end
   end
 end
