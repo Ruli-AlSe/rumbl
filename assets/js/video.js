@@ -30,7 +30,9 @@ let Video = {
         })
 
         vidChannel.join()
-            .receive("ok", resp => console.log("Joined the video channel", resp))
+            .receive("ok", ({annotations}) => {
+                annotations.forEach( ann => this.renderAnnotation(msgContainer, ann) )
+            })
             .receive("error", reason => console.log("Join failed", reason));
     },
     esc(str) {
