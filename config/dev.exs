@@ -23,7 +23,10 @@ config :rumbl, RumblWeb.Endpoint,
   watchers: [
     # node: [
     #   "node_modules/webpack/bin/webpack.js",
+    #   "--mode",
+    #   "development",
     #   "--watch",
+    #   "--watch-options-stdin",
     #   cd: Path.expand("../assets", __DIR__)
     # ]
   ]
