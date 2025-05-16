@@ -1,6 +1,8 @@
 defmodule RumblWeb.UserSocket do
   use Phoenix.Socket
 
+  channel "videos:*", RumblWeb.VideoChannel
+
   ## Channels
   # channel "room:*", RumblWeb.RoomChannel
 
